@@ -1,0 +1,14 @@
+[
+    {
+        "id": 1,
+        "username": "admin1",
+        "notification_method": "Email",
+        "notification_address": ""
+    },
+    {
+        "id": 2,
+        "username": "user1",
+        "notification_method": "Email",
+        "notification_address": "avtovarnov@yandex.ru"
+    }
+]
