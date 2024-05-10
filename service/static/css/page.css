@@ -1,0 +1,44 @@
+.welcome-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 100px;
+    margin-bottom: 10px;
+    /* Уменьшаем расстояние между блоками */
+    color: white;
+    font-size: 24px;
+}
+
+.welcome-text {
+    flex: 2;
+    /* Увеличиваем ширину левого блока */
+    padding-right: 20px;
+}
+
+.next-button {
+    flex: 1;
+    /* Уменьшаем ширину правого блока */
+    text-align: right;
+    margin-left: auto;
+    /* Подвигаем правый блок ближе к левому */
+}
+
+.transparent-btn {
+    color: white;
+    background-color: transparent;
+    border: 2px solid white;
+    /* Белая граница */
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.transparent-btn:hover {
+    background-color: white;
+    /* Изменяем цвет фона при наведении */
+    color: black;
+    /* Изменяем цвет текста при наведении */
+}
+
+.python-code {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 10pt;
+}

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,8 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'social_django',
+
     'users.apps.UsersConfig',
     'notifications',
+    'login',
+    'userprofile',
 ]
 
 MIDDLEWARE = [
@@ -65,6 +70,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'userprofile.context_processors.get_user_profile',
             ],
         },
     },
@@ -91,6 +98,15 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.github.GithubOAuth2',
+
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIAL_AUTH_GITHUB_KEY = 'Ov23lirCmsby1zgf4dui'
+SOCIAL_AUTH_GITHUB_SECRET = 'e09eeef1adb43b6ab10abfedeab2caaea3e23d92'
 
 
 # Internationalization
@@ -123,6 +139,9 @@ CELERY_BROKER_URL = 'redis://redis:6379/0'
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
+
 
 # smtp
 EMAIL_HOST = "smtp.gmail.com"
@@ -131,6 +150,17 @@ EMAIL_HOST_USER = "not1ficationservice599@gmail.com"
 EMAIL_HOST_PASSWORD = "cffy zcxy annm lgxs"
 EMAIL_USE_TLS = True
 
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+
+SOCIAL_AUTH_JSONFIELD_ENABLED = True
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 try:

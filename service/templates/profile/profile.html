@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}User Profile{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        <!-- Аватар пользователя /static/img/fIVre2dp9WY.jpg-->
+        {% if profile.avatar.url %}
+            <img src="{{ profile.avatar.url }}" alt="{{ profile.user.username }}" class="mr-3 rounded-circle" style="width: 200px; height: 200px;">
+        {% endif %}
+        <!-- Ник пользователя -->
+        <h4 style = "text-align: center;">{{ profile.user.username }}</h4>
+    </div>
+    <div class="col-md-9 bg-white">
+        <h3>User App ID</h3>
+        <p>Here you can generate personal APP token for API.</p>
+        <p>It is necessary to calculate API usage statistic to avoid automatic scrapers.</p>
+        <p>Define a personal environment for each user. Where you can make CRUD operation on entities (user/post/comments etc.). This changes will be visible only for you.</p>
+        <p>Use App ID value to set app-id header for all request to API.</p>
+        <h5>App IDs list</h5>
+        <!-- Блок сгенерированных ключей API -->
+        {% for api_key in api_keys %}
+            <div class="app-id">
+                <p>{{ api_key.created_at }}</p>
+                <p>{{ api_key.value }}</p>
+                <button class="btn btn-sm btn-danger">Delete</button>
+            </div>
+        {% endfor %}
+        <!-- Форма для генерации нового ключа API -->
+        {% comment %} action="{% url 'generate_app_id' %}" {% endcomment %}
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-sm btn-success">Generate App ID</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% load static %}
+    
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Django Auth Tutorial{% endblock %}</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/page.css' %}">
+</head>
+<body>
+  <!-- base.html -->
+<header class="navbar navbar-light bg-light">
+  <div class="container d-flex justify-content-between align-items-center">
+    <a class="navbar-brand" href="{% url 'home' %}">FakeAPI</a>
+    <div>
+      {% if user.is_authenticated %}
+        <div class="d-flex align-items-center">
+          <div class="mr-3">
+            <p class="text-danger mb-0"><strong>{{ user.username }}</strong></p>
+            <div class="d-flex">
+              {% if profile %}
+                <a class="text-warning" href="{% url 'profile' pk=profile.pk %}">Профиль</a>
+              {% else %}
+                <a class="text-warning" href="">Профиль</a>
+              {% endif %}
+              
+              <p class="text-secondary">/</p>
+              <form method="post" class="d-inline">
+                {% csrf_token %}
+                 <a class="text-warning" href="{% url 'logout' %}">Выйти</a>
+              </form>
+            </div>
+          </div>
+          <div>
+            <!-- Ваша аватарка пользователя -->
+            <!-- Пример: -->
+            <!-- <img src="{{ user.avatar.url }}" alt="{{ user.username }}" class="rounded-circle" width="40" height="40"> -->
+          </div>
+        </div>
+      {% else %}
+        <a class="text-orange mr-2" href="#">Sign in</a>
+        <a class="text-orange mr-2" href="{% url 'signup' %}">Sign up</a>
+      {% endif %}
+    </div>
+  </div>
+</header>
+
+
+
+
+
+  <main class="container mt-4">
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

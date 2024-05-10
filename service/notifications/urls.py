@@ -1,7 +1,9 @@
 from django.urls import path
-from .views import CustomUserListAPIView
+from .views import JSONSendAPIView, CSVSendAPIView, MainPageView
 
 
 urlpatterns = [
-    path('api/', CustomUserListAPIView.as_view(), name='users_list'),
+    path('', MainPageView.as_view(), name='home'),
+    path('api/json/', JSONSendAPIView.as_view()),
+    path('api/csv/', CSVSendAPIView.as_view()),
 ]

@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block title %}Home - Django Auth Tutorial{% endblock %}
+
+{% block content %}
+<div class="welcome-container">
+  <div class="welcome-text">
+    <h1>Welcome to FakeAPI</h1>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam rhoncus mi a suscipit ultricies.</p>
+    <a class="btn btn-lg transparent-btn" href="#next-block" role="button">Документация</a>
+  </div>
+</div>
+
+<br><br> 
+
+<div id="next-block">
+  <h3 style = "color: white; text-align: center;">Точки API</h3>
+  <br>
+  <div class="row">
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">JSON API</h5>
+          <p class="card-text">Эндпоинт для отправки уведомлений по электронной почте с использованием файла JSON.</p>
+          <h6>Отправка уведомлений по электронной почте</h6>
+          <p>- Эндпоинт: <strong>POST /api/json/</strong></p>
+          <p>- Запрос: Файл JSON, содержащий список пользователей и сообщение для отправки.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">CSV API</h5>
+          <p class="card-text">Эндпоинт для отправки уведомлений по электронной почте с использованием файла CSV.</p>
+          <h6>Отправка уведомлений по электронной почте</h6>
+          <p>- Эндпоинт: <strong>POST /api/csv/</strong></p>
+          <p>- Запрос: Файл CSV, содержащий список пользователей и сообщение для отправки.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card bg-light mb-3" style="max-width: 100%;">
+  <div class="card-header">Пример использования API</div>
+  <div class="card-body">
+    <h5 class="card-title">Python код</h5>
+    <p class="python-code"> <!-- Изменили класс здесь -->
+      import requests<br>
+      <br>
+      with open('users.json', 'rb') as file:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;files = {'file': file}<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;response = requests.post('http://localhost:8000/api/', files=files)<br>
+      <br>
+      print(response.json())
+    </p>
+    <button class="btn btn-outline-info" onclick="copyCode(this)">Скопировать</button> <!-- Добавили this для передачи элемента кнопки -->
+  </div>
+</div>
+
+
+<footer class="footer mt-auto py-3 bg-light">
+    <div class="container text-center">
+      <hr>
+      <span class="text-muted">Created by Developers for Developers. &copy; 2024</span>
+    </div>
+  </footer>
+
+<script>
+function copyCode(button) {
+  // Получаем элемент с кодом
+  var codeElement = document.querySelector('.python-code'); // Изменили класс здесь
+
+  // Создаем временный элемент textarea для копирования текста
+  var tempTextarea = document.createElement('textarea');
+  tempTextarea.value = codeElement.innerText;
+  document.body.appendChild(tempTextarea);
+
+  // Выделяем текст в textarea и копируем его
+  tempTextarea.select();
+  document.execCommand('copy');
+
+  // Удаляем временный элемент textarea
+  document.body.removeChild(tempTextarea);
+
+  // Изменяем текст кнопки после копирования
+  button.innerText = 'Скопировано'; 
+
+  // Опционально: установите таймер для возврата текста кнопки к исходному состоянию через несколько секунд
+  setTimeout(function() {
+    button.innerText = 'Скопировать';
+  }, 2000); // 2000 миллисекунд (2 секунды) для примера
+}
+</script>
+
+
+
+{% endblock %}
