@@ -1,14 +1,9 @@
 from django.shortcuts import render, redirect
-from django.views.generic.detail import DetailView
+from django.views import View
 from django.contrib.auth.decorators import login_required
 from django.utils.crypto import get_random_string
 
 from .models import Profile, APIKey
-
-
-class ProfileView(DetailView):
-    model = Profile
-    template_name = 'profile/profile.html'
 
 
 @login_required
@@ -19,11 +14,12 @@ def generate_api_key(request):
 
 
 @login_required
-def profile(request):
+def profile_view(request):
+    
     api_keys = APIKey.objects.filter(user=request.user)
 
     if request.method == 'POST':
         generate_api_key(request)
     
-    return render(request, 'profile.html', {'api_keys': api_keys})
+    return render(request, 'profile/profile.html', {'api_keys': api_keys})
     

@@ -7,6 +7,8 @@ from users.models import CustomUser
 from .serializers import CustomUserSerializer
 
 from .utils import send_email, check_json_file
+from .permissions import HasAPIKeyAndIsAuthenticated
+
 import json
 import csv
 import codecs
@@ -18,6 +20,8 @@ class MainPageView(View):
     
 
 class JSONSendAPIView(APIView):
+
+    permission_classes = [HasAPIKeyAndIsAuthenticated]
     
     def post(self, request, format=None):
         file_obj = request.FILES.get('file')

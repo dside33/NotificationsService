@@ -21,7 +21,7 @@
             <p class="text-danger mb-0"><strong>{{ user.username }}</strong></p>
             <div class="d-flex">
               {% if profile %}
-                <a class="text-warning" href="{% url 'profile' pk=profile.pk %}">Профиль</a>
+                <a class="text-warning" href="{% url 'profile' %}">Профиль</a>
               {% else %}
                 <a class="text-warning" href="">Профиль</a>
               {% endif %}
