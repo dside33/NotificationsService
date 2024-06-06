@@ -52,9 +52,9 @@ class CSVSendAPIView(APIView):
             return Response({"error": str(e)}, status=400)
         
         
-        for user in users_data:
-            if user.get('notification_method') == CustomUser.EMAIL:
-                send_email.delay(user.get('notification_address'))
+        # for user in users_data:
+        #     if user.get('notification_method') == CustomUser.EMAIL:
+        #         send_email.delay(user.get('notification_address'))
         
         return Response({"message": users_data}, status=200)
 

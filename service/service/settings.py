@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 
+from dotenv import load_dotenv
+load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-f4*ya)#3dnv#i_kr_ltuql2z)pl%g((o*$jfu(8%-#(jk2a3a&'
+SECRET_KEY = os.getenv("SECRET_KEY", default="")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,8 +40,10 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'daphne',
     'django.contrib.staticfiles',
-
+    
+    'channels',
     'social_django',
 
     'users.apps.UsersConfig',
@@ -78,6 +83,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'service.wsgi.application'
+ASGI_APPLICATION = 'service.asgi.application'
 
 
 
@@ -105,8 +111,8 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-SOCIAL_AUTH_GITHUB_KEY = 'Ov23lirCmsby1zgf4dui'
-SOCIAL_AUTH_GITHUB_SECRET = 'e09eeef1adb43b6ab10abfedeab2caaea3e23d92'
+SOCIAL_AUTH_GITHUB_KEY = os.getenv("SOCIAL_AUTH_GITHUB_KEY", default="")
+SOCIAL_AUTH_GITHUB_SECRET = os.getenv("SOCIAL_AUTH_GITHUB_SECRET", default="")
 
 
 # Internationalization
@@ -146,8 +152,8 @@ LOGOUT_REDIRECT_URL = 'home'
 # smtp
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
-EMAIL_HOST_USER = "not1ficationservice599@gmail.com"
-EMAIL_HOST_PASSWORD = "cffy zcxy annm lgxs"
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", default="")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", default="")
 EMAIL_USE_TLS = True
 
 
@@ -161,6 +167,18 @@ SOCIAL_AUTH_JSONFIELD_ENABLED = True
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': 'redis://redis:6379',  
+        'OPTIONS': {
+            'db': '1'
+        }
+    }
+}
+
 
 
 try:

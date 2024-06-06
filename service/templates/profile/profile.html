@@ -20,20 +20,74 @@
         <p>Define a personal environment for each user. Where you can make CRUD operation on entities (user/post/comments etc.). This changes will be visible only for you.</p>
         <p>Use App ID value to set app-id header for all request to API.</p>
         <h5>App IDs list</h5>
-        <!-- Блок сгенерированных ключей API -->
-        {% for api_key in api_keys %}
-            <div class="app-id">
-                <p>{{ api_key.created_at }}</p>
-                <p>{{ api_key.value }}</p>
-                <button class="btn btn-sm btn-danger">Delete</button>
-            </div>
-        {% endfor %}
+        <div id="api-keys-list">
+            <!-- Здесь будет список API ключей -->
+        </div>
         <!-- Форма для генерации нового ключа API -->
-        {% comment %} action="{% url 'generate_app_id' %}" {% endcomment %}
-        <form method="POST">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-sm btn-success">Generate App ID</button>
-        </form>
+        <button type="submit" class="btn btn-sm btn-success" onclick="create_api_key()">Generate App ID</button>
+
     </div>
+
 </div>
+
+<script>
+    var socket = new WebSocket('ws://127.0.0.1:8000/ws/profile/')
+
+    socket.onmessage = function(event){
+        var data = JSON.parse(event.data)
+
+        console.log(data)
+
+        if (data.type === 'api_keys') {
+            updateApiKeysList(data.api_keys);
+        }
+    };
+
+    socket.onerror = function(error) {
+        alert(`[error]`);
+    };
+
+    function create_api_key() {
+        socket.send(JSON.stringify({
+            'type': 'create_api_key'
+        }))
+    } 
+
+    function updateApiKeysList(api_keys) {
+        var apiKeysListDiv = document.getElementById('api-keys-list');
+        apiKeysListDiv.innerHTML = ''; // Очищаем текущий список
+
+        api_keys.forEach(function(api_key) {
+            var keyDiv = document.createElement('div');
+            keyDiv.className = 'app-id';
+
+            var createdAtP = document.createElement('p');
+            createdAtP.textContent = api_key.created_at;
+
+            var valueP = document.createElement('p');
+            valueP.textContent = api_key.value;
+
+            var deleteButton = document.createElement('button');
+            deleteButton.className = 'btn btn-sm btn-danger';
+            deleteButton.textContent = 'Delete';
+            deleteButton.onclick = function() {
+                deleteApiKey(api_key.value);
+            };
+
+            keyDiv.appendChild(createdAtP);
+            keyDiv.appendChild(valueP);
+            keyDiv.appendChild(deleteButton);
+
+            apiKeysListDiv.appendChild(keyDiv);
+        });
+    }
+
+    function deleteApiKey(apiKeyValue) {
+        socket.send(JSON.stringify({
+            'type': 'delete_api_key',
+            'value': apiKeyValue
+        }));
+    }
+
+</script>
 {% endblock %}
